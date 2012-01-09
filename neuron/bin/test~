@@ -1,5 +1,0 @@
-#!/bin/bash
-export lang=en_US
-export LC_ALL=C
-export LC_NUMERIC=C
-java -jar tools/PlayGame.jar maps/map7.txt 1000 1000 log.txt "java -cp target MyBot" "java -jar example_bots/DualBot.jar" | java -jar tools/ShowGame.jar
