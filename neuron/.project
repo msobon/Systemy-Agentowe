@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>neuron</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>java_starter_package</name>
+			<type>2</type>
+			<location>E:/Studia mgr/I semestr/SA/projekt/java_starter_package</location>
+		</link>
+		<link>
+			<name>sources</name>
+			<type>2</type>
+			<location>E:/Studia mgr/I semestr/SA/kohonen/neuroph-2.5.1/sources</location>
+		</link>
+	</linkedResources>
+</projectDescription>
