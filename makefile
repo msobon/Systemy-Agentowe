@@ -1,8 +1,7 @@
-CLASSPATH := target:lib/*:lib/drools/*:lib/drools/lib/*
+CLASSPATH := target:src:lib/*:lib/drools/*:lib/drools/lib/*
 
 compile:
-	javac src/*.java -d target -cp lib/neuroph-2.5.1.jar:lib/drools/drools-api-5.1.1.jar:src
+	javac src/pw/*.java -d target -cp ${CLASSPATH}
 
 test:
-	echo ${CLASSPATH}
-	java -Duser.country=EN -jar tools/PlayGame.jar maps/map5.txt 10000 200 log.txt "java -Duser.country=EN MyBot" "java -Duser.country=EN -jar example_bots/DualBot.jar" | java -Duser.country=EN -jar tools/ShowGame.jar
+	java -Duser.country=EN -jar tools/PlayGame.jar maps/map5.txt 10000 200 log.txt "java -Duser.country=EN -cp ${CLASSPATH} pw.MyBot" "java -Duser.country=EN -jar example_bots/DualBot.jar" | java -Duser.country=EN -jar tools/ShowGame.jar
