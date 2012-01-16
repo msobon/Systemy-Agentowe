@@ -1,3 +1,4 @@
+package pw;
 /**
  * Class representing a single fleet travelling between two planets.
  * Contains all information accessible from the input.
@@ -31,27 +32,27 @@ public class Fleet implements Comparable, Cloneable {
 
     // Accessors and simple modification functions. These should be mostly
     // self-explanatory.
-    public int Owner() {
+    public int getOwner() {
 	return owner;
     }
 
-    public int NumShips() {
+    public int getNumShips() {
 	return numShips;
     }
 
-    public int SourcePlanet() {
+    public int getSourcePlanet() {
 	return sourcePlanet;
     }
 
-    public int DestinationPlanet() {
+    public int getDestinationPlanet() {
 	return destinationPlanet;
     }
 
-    public int TotalTripLength() {
+    public int getTotalTripLength() {
 	return totalTripLength;
     }
 
-    public int TurnsRemaining() {
+    public int getTurnsRemaining() {
 	return turnsRemaining;
     }
 

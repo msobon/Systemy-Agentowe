@@ -1,3 +1,4 @@
+package pw;
 import java.util.*;
 
 /**
@@ -59,5 +60,21 @@ public class Planet implements Cloneable {
 
     public Object clone() {
 	return new Planet(this);
+    }
+    
+    public int getOwner() {
+    return owner;
+    }
+    public int getNumShips() {
+    return numShips;
+    }
+    public int getGrowthRate() {
+    return growthRate;
+    }
+    public int getNumIncoming() {
+    return incoming.size();
+    }
+    public int getPlanetID() {
+    return planetID;
     }
 }
