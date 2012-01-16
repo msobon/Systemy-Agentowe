@@ -6,6 +6,11 @@ import java.util.*;
  * on the opponent's planets.
  */
 public class Conqueror {
+	private static double factor = 0.0;
+	public static void setFactor(double f) {
+		factor = f;
+	}
+
 	/**
 	 * For each of your planets containing spare forces the algorithm
 	 * searches for the nearest enemy planet and estimates if it can
@@ -33,7 +38,7 @@ public class Conqueror {
 	 */
 	public static void steal(PlanetWars pw) {
 		//empiric factor, to be tuned
-		int aggro = 0+(pw.myForces/10);
+		int aggro = (int)factor+(pw.myForces/10);
 		//find the forsaken
 		List<Planet> forsaken = new ArrayList<Planet>();
 		for (Planet p : pw.planets) {

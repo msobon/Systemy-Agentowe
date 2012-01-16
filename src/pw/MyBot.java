@@ -25,22 +25,18 @@ public class MyBot {
 	 */
 	public static void DoTurn(PlanetWars pw) {
 		try {
-			ArrayList<Double> data = new ArrayList<Double>();
-			data.add(new Double(pw.enemyForces));
-			for (Fleet fleet : pw.fleets) {
-
-			}
-
-			network.train(new double[] { pw.enemyForces });
-			int factor = network
-					.analyzeWithKohonenNetwork(new double[] { pw.enemyForces });
+			double[] data = new double[] { pw.enemyForces };
+			network.train(data);
+			double factor = network.analyzeWithKohonenNetwork(data);
+			Conqueror.setFactor(factor);
+			
+			System.err.println("Aggresiveness factor: "+factor);
 
 			Oracle.sortFleets(pw);
 			Oracle.analyzeBattles(pw);
 			Protector.calcSafety(pw);
-			if (factor == 2) {
-				Conqueror.conquer(pw);
-			}
+			Conqueror.conquer(pw);
+			Conqueror.steal(pw);
 			Explorer.explore(pw);
 			Strategist.microShift(pw);
 		} catch (Exception e) {
