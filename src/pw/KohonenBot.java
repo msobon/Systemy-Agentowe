@@ -3,12 +3,15 @@ package pw;
 import java.util.*;
 import java.io.*;
 
+import pl.edu.agh.sa.KohonenNetwork;
+
 /**
  * This is the main class containing the body of the game Bot. The name and form
  * are as required by the specification of the competition. Contains standard
  * input/output handling and simple self-made logging utility.
  */
-public class MyBot {
+public class KohonenBot {
+	private static KohonenNetwork network = new KohonenNetwork(1, 3);
 
 	/**
 	 * This method is called each turn after the input information is parsed.
@@ -22,10 +25,18 @@ public class MyBot {
 	 */
 	public static void DoTurn(PlanetWars pw) {
 		try {
+			double[] data = new double[] { pw.enemyForces };
+			network.train(data);
+			double factor = network.analyzeWithKohonenNetwork(data);
+			Conqueror.setFactor(factor);
+			
+			System.err.println("Aggresiveness factor: "+factor);
+
 			Oracle.sortFleets(pw);
 			Oracle.analyzeBattles(pw);
 			Protector.calcSafety(pw);
 			Conqueror.conquer(pw);
+			Conqueror.steal(pw);
 			Explorer.explore(pw);
 			Strategist.microShift(pw);
 		} catch (Exception e) {
