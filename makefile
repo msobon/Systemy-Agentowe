@@ -8,3 +8,6 @@ test:
 
 test2:
 	java -jar tools/PlayGame.jar maps/map5.txt 10000 200 log.txt "java -cp ${CLASSPATH} pw.KohonenBot" "java -cp ${CLASSPATH} pw.MyBot" | java -jar tools/ShowGame.jar
+
+test3:
+	java -jar tools/PlayGame.jar maps/map5.txt 10000 10000 log.txt "java -cp ${CLASSPATH} pw.RuleBot" "java -cp ${CLASSPATH} pw.MyBot" | java -jar tools/ShowGame.jar

@@ -1,0 +1,145 @@
+import pw.*;
+import java.util.*;
+global PlanetWars game;
+
+###################
+## Configuration ##
+###################
+//This rule launches once at the start of the engine.
+
+rule "Initial configuration"
+	salience 100
+	when
+		//this rule activates at the start of session
+	then
+		//assert initial parameters here
+		int aggro = game.myForces/2;
+		insert( new AggroLevel(aggro) );
+		
+		//create groups
+		List<Planet> capitals = new ArrayList<Planet>();
+		Collections.sort(game.myplanets,new Comparator<Planet>()
+			{public int compare(Planet p1, Planet p2){return p2.growthRate-p1.growthRate;}});
+		for (Planet pl : game.myplanets) if (capitals.size() < 3) capitals.add(pl);
+		List<PlanetGroup> groups = new ArrayList<PlanetGroup>();
+		for (Planet capital : capitals) {
+			PlanetGroup tmp = new PlanetGroup();
+			tmp.setMain(capital);
+			tmp.setOther(new ArrayList<Planet>());
+			groups.add(tmp);
+			insert( tmp );
+		}
+		for (Planet pl : game.myplanets) {
+			Planet capital = game.getClosest(pl, capitals);
+			for (PlanetGroup group : groups)
+				if (group.getMain() == capital) group.getOther().add(pl);
+		}
+end
+
+###############################
+## Declarations and metadata ##
+###############################
+
+declare AggroLevel
+	@role( fact )
+	value : Integer
+end
+
+declare BackupRequest
+	@role( fact )
+	urgency : Integer
+	strength : Integer
+	caller : Planet
+end
+
+declare PlanetGroup
+	@role( fact )
+	main : Planet
+	other : List
+end
+
+##################
+## Global Rules ##
+##################
+
+rule "Conquer neutrals"
+	salience 30
+	when
+		$level : AggroLevel( value > 0, $aggro : value )
+		$target : Planet( owner == 0, numIncoming == 0, $size : growthRate, numShips < $aggro )
+#		not Planet( owner == 0, numIncoming == 0, growthRate > $size )
+	then
+		Planet closest = game.getClosest($target,game.myplanets);
+		if ($target.numShips < closest.numShips) {
+			game.IssueOrder(closest, $target, $target.numShips + 1);
+#			$level.setValue(0);
+#			update($level);
+		}
+end
+
+rule "Attack the enemy"
+	salience 50
+	when
+		$level  : AggroLevel( value > 0, $aggro : value )
+		$target : Planet( owner == 2, numIncoming == 0, numShips < $aggro, $enforce : numShips )
+		$source : Planet( owner == 1, numShips > $enforce, $myforce : numShips )
+	then
+		int req = $enforce + $target.getGrowthRate()*PlanetWars.Distance($target,$source);
+		if (req < $myforce) {
+			game.IssueOrder($source, $target, req+1);
+			$level.setValue(0);
+			update($level);
+		}
+end
+
+rule "Call emergency"
+	salience 80
+	when
+		$attacker : Fleet( owner == 2, $dest : destinationPlanet )
+		$defender : Planet( owner == 1, planetID == $dest )
+#		$friendly   : Number() from accumulate( Fleet(), sum($str) )
+#		$unfriendly : Number() from accumulate( Fleet(), sum($str) )
+	then
+		BackupRequest req = new BackupRequest();
+		req.setUrgency( $attacker.turnsRemaining );
+		req.setStrength( $attacker.numShips );
+		req.setCaller( $defender );
+		insert( req );
+end
+
+rule "Send help"
+	salience 70
+	when
+		$request : BackupRequest( $str : strength, $caller : caller )
+		$helper : Planet( owner == 1, numShips > $str )
+		eval( PlanetWars.Distance($helper,$request.getCaller()) == $request.getUrgency() )
+	then
+		game.IssueOrder($helper, $caller, $str);
+		retract( $request );
+end
+
+#################
+## Local Rules ##
+#################
+
+rule "Opportunity Attack"
+	salience 30
+	when
+		$target : Planet( owner == 2, $deforce : numShips )
+#		not Fleet( destinationPlanet == $target, turnsRemaining <= 10 )
+	then
+		Planet source = game.getClosest($target,game.myplanets);
+		int dist = PlanetWars.Distance($target,source);
+		int req = $deforce + $target.getGrowthRate()*dist;
+		if ( dist<=10 ) game.IssueOrder( source, $target, req+1 );
+end
+
+rule "Supply Lines"
+	salience 0
+	when
+		$group : PlanetGroup()
+	then
+		List<Planet> planets = (List<Planet>) $group.getOther();
+		for( Planet pl : planets )
+			game.IssueOrder( pl, $group.getMain(), pl.numShips );
+end
