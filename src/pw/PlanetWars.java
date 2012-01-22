@@ -59,7 +59,8 @@ public class PlanetWars {
     			if (dest.owner == 2) enemyDefFleets++;
     			else enemyAttFleets++;
     		}
-    	double fleetRatio = enemyAttFleets / (enemyAttFleets + enemyDefFleets + 1);
+    	double fleetRatio = enemyAttFleets / (enemyAttFleets + enemyDefFleets);
+    	if (enemyAttFleets + enemyDefFleets == 0) fleetRatio = 0;
     	averageFleetSize /= enemyAttFleets + enemyDefFleets + 1;
     	averageFleetSize = averageFleetSize > 100 ? 1 : averageFleetSize/100;
     	
