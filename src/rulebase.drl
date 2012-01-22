@@ -16,11 +16,13 @@ rule "Initial configuration"
 		int aggro = game.myForces/2;
 		insert( new AggroLevel(aggro) );
 		
+		int capitalNo = 3;
+		
 		//create groups
 		List<Planet> capitals = new ArrayList<Planet>();
 		Collections.sort(game.myplanets,new Comparator<Planet>()
 			{public int compare(Planet p1, Planet p2){return p2.growthRate-p1.growthRate;}});
-		for (Planet pl : game.myplanets) if (capitals.size() < 3) capitals.add(pl);
+		for (Planet pl : game.myplanets) if (capitals.size() < capitalNo) capitals.add(pl);
 		List<PlanetGroup> groups = new ArrayList<PlanetGroup>();
 		for (Planet capital : capitals) {
 			PlanetGroup tmp = new PlanetGroup();

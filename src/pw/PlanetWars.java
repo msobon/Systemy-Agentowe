@@ -48,6 +48,22 @@ public class PlanetWars {
 		ParseGameState(gameStateString);
     }
     
+    public double[] getNElement() {
+    	double enemyAttFleets = 0;
+    	double enemyDefFleets = 0;
+    	double averageFleetSize = 0;
+    	for (Fleet f : fleets)
+    		if (f.owner == 2) {
+    			averageFleetSize += f.numShips;
+    			Planet dest = planets.get(f.destinationPlanet);
+    			if (dest.owner == 2) enemyDefFleets++;
+    			else enemyAttFleets++;
+    		}
+    	averageFleetSize /= enemyAttFleets + enemyDefFleets;
+    	double[] result = {enemyAttFleets,enemyDefFleets,averageFleetSize};
+    	return result;
+    }
+    
 	
 	/**
 	 * Calculates which of your planets are the closest to the target.
