@@ -3,6 +3,7 @@ package pl.edu.agh.sa.pw;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.learning.SupervisedTrainingElement;
 import org.neuroph.core.learning.TrainingSet;
+import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.Perceptron;
 
 import java.io.File;
@@ -25,8 +26,10 @@ public class NeuralClassifier {
        if((new File(networkPath)).exists()){
          perceptron = NeuralNetwork
 				.load(networkPath);
+          System.out.println("newtwork loaded");
        }else{
-          perceptron = new Perceptron(3, 2);
+          perceptron = new MultiLayerPerceptron(3,7,2);
+          System.out.println("new newtwork created");
        }
        TrainingSet<SupervisedTrainingElement> trainingSet = new TrainingSet<SupervisedTrainingElement>(
 				3, 2);
@@ -37,8 +40,10 @@ public class NeuralClassifier {
     }
 
 	public static void main(String args[]) {
-        loadLearnAndSave("myN",new double[] {1,0,0},new double[]{1,0});
-        System.out.print(analyze("myN",new double[] {1,0,0})[0]+ " "+analyze("myN",new double[] {1,0,0})[1]);
+        loadLearnAndSave("myN",new double[] {0.1,0,0},new double[]{1,0});
+        System.out.print(analyze("myN", new double[]{0.9, 0, 0})[0] + " " + analyze("myN", new double[]{1, 0, 0})[1]);
+
+
 
 	}
 
