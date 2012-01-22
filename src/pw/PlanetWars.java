@@ -59,8 +59,11 @@ public class PlanetWars {
     			if (dest.owner == 2) enemyDefFleets++;
     			else enemyAttFleets++;
     		}
-    	averageFleetSize /= enemyAttFleets + enemyDefFleets;
-    	double[] result = {enemyAttFleets,enemyDefFleets,averageFleetSize};
+    	double fleetRatio = enemyAttFleets / (enemyAttFleets + enemyDefFleets + 1);
+    	averageFleetSize /= enemyAttFleets + enemyDefFleets + 1;
+    	averageFleetSize = averageFleetSize > 100 ? 1 : averageFleetSize/100;
+    	
+    	double[] result = {fleetRatio,1-fleetRatio,averageFleetSize};
     	return result;
     }
     
@@ -155,7 +158,7 @@ public class PlanetWars {
      * @param numShips the number of ships to be sent
      */
     public void IssueOrder(Planet source, Planet dest, int numShips) {
-    	MyBot.log("order called: "+source.planetID+" "+dest.planetID+" "+numShips);
+    //	MyBot.log("order called: "+source.planetID+" "+dest.planetID+" "+numShips);
 		if (source == dest) return;
 		if (numShips <= 0) return;
 		if (source.numShips >= numShips) {

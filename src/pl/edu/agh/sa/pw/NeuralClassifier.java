@@ -25,10 +25,8 @@ public class NeuralClassifier {
        if((new File(networkPath)).exists()){
          perceptron = NeuralNetwork
 				.load(networkPath);
-          System.out.println("newtwork loaded");
        }else{
           perceptron = new Perceptron(3, 2);
-          System.out.println("new newtwork created");
        }
        TrainingSet<SupervisedTrainingElement> trainingSet = new TrainingSet<SupervisedTrainingElement>(
 				3, 2);

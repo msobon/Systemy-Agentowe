@@ -11,3 +11,9 @@ test2:
 
 test3:
 	java -jar tools/PlayGame.jar maps/map5.txt 10000 10000 log.txt "java -cp ${CLASSPATH} pw.RuleBot" "java -cp ${CLASSPATH} pw.MyBot" | java -jar tools/ShowGame.jar
+
+learn:
+	java -jar tools/PlayGame.jar maps/map5.txt 10000 200 log.txt "java -cp ${CLASSPATH} pw.PerceptronBot" "java -jar example_bots/BullyBot.jar"
+
+learn2:
+	java -jar tools/PlayGame.jar maps/map5.txt 10000 200 log.txt "java -cp ${CLASSPATH} pw.PerceptronBot" "java -cp ${CLASSPATH} pw.MyBot"
