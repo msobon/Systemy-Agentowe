@@ -13,7 +13,10 @@ rule "Initial configuration"
 		//this rule activates at the start of session
 	then
 		//assert initial parameters here
-		int aggro = game.myForces/2;
+		
+		//get global strategy from neural network
+		double[] result = pl.edu.agh.sa.pw.NeuralClassifier.analyze("network",game.getNElement());
+		int aggro = (int) ((game.myForces)*(1.5-result[0]/2.0-result[1]/2.0));
 		insert( new AggroLevel(aggro) );
 		
 		int capitalNo = 3;
